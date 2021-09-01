@@ -8,7 +8,7 @@ var playerMoney = 10;
 
 
 var enemyNames = ["trash", "uncool dork", "scumbag"];
-var enemyHealth = 50;
+var enemyHealth = 20;
 var enemyAttack = 12;
 
 //todo: add start and end game functions. in end game alert player of stats, ask if they want to play again. if yes, start game. 
@@ -33,20 +33,24 @@ window.alert(playerName + " has decided to skip this fight. Goodbye! " + playerM
 break;
 }
 }
-  enemyHealth = enemyHealth - playerAttack;
+  var damage = randomNumber(playerAttack - 3, playerAttack);
+
+  enemyHealth = Math.max(0, enemyHealth - damage);
   console.log(
     playerName + ' attacked ' + enemyName + '. ' + enemyName + ' now has ' + enemyHealth + ' health remaining.'
   );
+  window.alert("attack = " + damage);
 
   if (enemyHealth <= 0) {
     window.alert(enemyName + ' has died!');
-    playerMoney = playerMoney + 20;
+    playerMoney = Math.max(0, playerMoney - enemyAttack);
     break;
   } else {
     window.alert(enemyName + ' still has ' + enemyHealth + ' health left.');
   }
-
-  playerHealth = playerHealth - enemyAttack;
+var damage = randomNumber(enemyAttack - 3, enemyAttack);
+playerHealth = Math.max(0, playerHealth - damage);
+  window.alert("attack = " + damage);
   console.log(
     enemyName + ' attacked ' + playerName + '. ' + playerName + ' now has ' + playerHealth + ' health remaining.'
   );
@@ -65,12 +69,13 @@ for (var i = 0; i < enemyNames.length; i++) {
     // reset player stats
   playerHealth = 100;
   playerAttack = 10;
-  playerMoney; 
+  playerMoney = 10; 
+  
 
       if(playerHealth > 0){
        window.alert("welcome to the fuckin goon squad" + (i+1));
             var pickedEnemyName = enemyNames[i];
-            enemyHealth = 50;
+            enemyHealth = randomNumber(40, 60);
             fight(pickedEnemyName);
             if(playerHealth > 0 && i < enemyNames.length -1){
                 var storeConfirm = window.confirm("fight over. shop????");
@@ -142,6 +147,13 @@ var endGame = function() {
               shop();
               break;
       }
+  }
+
+  var randomNumber = function(min, max)
+  {
+      var value = Math.floor(Math.random() * (max - min + 1)) + min;
+
+      return value;
   }
 startGame();
 
