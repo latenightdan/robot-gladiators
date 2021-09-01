@@ -18,22 +18,7 @@ var enemyAttack = 12;
 //if leave, alert goodbye and exit
 //if invalid option, call shop again
 
-var endGame = function() {
-    window.alert("The game has now ended. Let's see how you did!");
-    if (playerHealth > 0) {
-        window.alert("Great job, you've survived the game! You now have a score of " + playerMoney + ".");
-      } 
-      else {
-        window.alert("You've lost your robot in battle.");
-      }
-      var playAgainConfirm = window.confirm("you done?");
-      if(playAgainConfirm){
-          startGame();
-      }
-      else{
-          window.alert("bye bye bye");
-      }
-  };
+
 var fight = function(enemyName) { 
      
     while(enemyHealth > 0 && playerHealth >0) {
@@ -80,13 +65,21 @@ for (var i = 0; i < enemyNames.length; i++) {
     // reset player stats
   playerHealth = 100;
   playerAttack = 10;
-  playerMoney = 10;
+  playerMoney; 
 
       if(playerHealth > 0){
        window.alert("welcome to the fuckin goon squad" + (i+1));
             var pickedEnemyName = enemyNames[i];
             enemyHealth = 50;
             fight(pickedEnemyName);
+            if(playerHealth > 0 && i < enemyNames.length -1){
+                var storeConfirm = window.confirm("fight over. shop????");
+
+                if(storeConfirm){
+                    shop();
+                }
+                
+            }
         }
         else{
             window.alert("you died");
@@ -94,6 +87,62 @@ for (var i = 0; i < enemyNames.length; i++) {
     }
     endGame();
 };
+var endGame = function() {
+    window.alert("The game has now ended. Let's see how you did!");
+  
+    // if player is still alive, player wins!
+    if (playerHealth > 0) {
+      window.alert("Great job, you've survived the game! You now have a score of " + playerMoney + '.');
+    } else {
+      window.alert("You've lost your robot in battle!");
+    }
+  
+    // ask player if they'd like to play again
+    var playAgainConfirm = window.confirm('Would you like to play again?');
+  
+    if (playAgainConfirm) {
+      startGame();
+    } else {
+      window.alert('Thank you for playing Robot Gladiators! Come back soon!');
+    }
+  };
+
+  var shop = function(){
+      var shopOptionPrompt = window.prompt("What ya wanna do? REFILL ya health? UPGRADE ya attack? or get out? Please enter REFILL, UPGRADE, or LEAVE");
+      switch (shopOptionPrompt){
+          case "refill":
+          case"REFILL":
+              if(playerMoney >=7){
+              window.alert("Refilling player's health by 20 for 7 dollars");
+              playerHealth = playerHealth +20;
+              playerMoney = playerMoney - 7;
+              }
+              else{
+                window.alert("you don't have enough money! You're a FUGLY SCANK");
+            }
+              break;
+          case "upgrade":
+              case "UPGRADE":
+              if (playerMoney >= 7){
+              window.alert("upgrading player's attack by 6 for 7 dollars.");
+              playerAttack = playerAttack + 6;
+              playerMoney = playerMoney - 7;
+            }
+            else{
+                window.alert("you don't have enough money! You're a FUGLY SCANK");
+            }
+              break;
+          case "leave":
+              case "LEAVE":
+              window.alert("leaving the store");
+              break;
+          default:
+              window.alert("you did not pick a valid option. Try again.");
+              
+              shop();
+              break;
+      }
+  }
 startGame();
 
 
